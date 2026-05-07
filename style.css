@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    overflow: hidden;
+    /* Prevent scrolling, canvas is full screen */
+}
+
+/* UI Overlay */
+#ui-layer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 400px;
+    max-width: calc(100vw - 40px);
+    z-index: 10;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+p {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    gap: 8px;
+}
+
+#search-input {
+    flex-grow: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#random-btn,
+#clear-btn {
+    flex-shrink: 0;
+    padding: 10px 12px;
+    font-size: 1.2rem;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#random-btn:hover,
+#clear-btn:hover {
+    background: #2980b9;
+}
+
+#search-input:focus {
+    border-color: #3498db;
+}
+
+/* Autocomplete Dropdown */
+#autocomplete-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+}
+
+#autocomplete-list.hidden {
+    display: none;
+}
+
+#autocomplete-list li {
+    padding: 10px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+#autocomplete-list li:hover {
+    background-color: #f1f8ff;
+}
+
+#status-message {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #2980b9;
+    min-height: 1.2rem;
+}
+
+/* Canvas */
+#tree-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    /* Behind UI */
+}

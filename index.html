@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شجرة ويكيبيديا</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="ui-layer">
+        <div class="search-container">
+            <h1>شجرة ويكيبيديا العربية</h1>
+            <p>ابحث عن مقالة للبدء في تتبع مسار الروابط</p>
+            <p>هل تعلم ان 97% من مقالات ويكيبيديا تنتهي سلسلة روابطها عند مقالة <a target="_blank" href="https://ar.wikipedia.org/wiki/%D8%B8%D8%A7%D9%87%D8%B1%D8%A9_%D8%A7%D9%84%D9%81%D9%84%D8%B3%D9%81%D8%A9_%D9%81%D9%8A_%D9%88%D9%8A%D9%83%D9%8A%D8%A8%D9%8A%D8%AF%D9%8A%D8%A7">فلسفة</a></p>
+            <div class="input-wrapper">
+                <input type="text" id="search-input" placeholder="ابحث عن مقالة..." autocomplete="off">
+                <button id="random-btn" title="مقالة عشوائية">🎲</button>
+                <button id="clear-btn" title="مسح الشجرة">🗑️</button>
+                <ul id="autocomplete-list" class="hidden"></ul>
+            </div>
+            <div id="status-message"></div>
+        </div>
+    </div>
+    
+    <canvas id="tree-canvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
