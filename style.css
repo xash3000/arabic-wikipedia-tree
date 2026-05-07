@@ -125,3 +125,21 @@ p {
     z-index: 1;
     /* Behind UI */
 }
+
+.developer-credit {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 0.75rem;
+    color: #7f8c8d;
+    z-index: 10;
+}
+
+.developer-credit a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.developer-credit a:hover {
+    text-decoration: underline;
+}
