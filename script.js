@@ -322,6 +322,61 @@ function addEdge(source, target) {
     }
 }
 
+// ==========================================
+// 5. Drag & Drop Interactivity
+// ==========================================
+
+let draggedNode = null;
+
+function getEventPos(e) {
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX, y: clientY };
+}
+
+function pointerDown(e) {
+    if (e.touches && e.touches.length > 1) return;
+    const pos = getEventPos(e);
+    const nodes = Object.values(graphNodes);
+
+    // Iterate in reverse to pick top-most node
+    for (let i = nodes.length - 1; i >= 0; i--) {
+        const n = nodes[i];
+        const dx = pos.x - n.x;
+        const dy = pos.y - n.y;
+        // Include interaction padding
+        if (dx * dx + dy * dy <= (n.radius + 15) * (n.radius + 15)) {
+            draggedNode = n;
+            e.preventDefault(); // Prevent scrolling on mobile
+            break;
+        }
+    }
+}
+
+function pointerMove(e) {
+    if (draggedNode) {
+        e.preventDefault(); // Prevent scrolling
+        const pos = getEventPos(e);
+        draggedNode.x = pos.x;
+        draggedNode.y = pos.y;
+        draggedNode.vx = 0;
+        draggedNode.vy = 0;
+    }
+}
+
+function pointerUp(e) {
+    draggedNode = null;
+}
+
+canvas.addEventListener('mousedown', pointerDown);
+canvas.addEventListener('touchstart', pointerDown, { passive: false });
+
+canvas.addEventListener('mousemove', pointerMove);
+canvas.addEventListener('touchmove', pointerMove, { passive: false });
+
+window.addEventListener('mouseup', pointerUp);
+window.addEventListener('touchend', pointerUp);
+
 function updatePhysics() {
     const nodes = Object.values(graphNodes);
 
@@ -380,8 +435,10 @@ function updatePhysics() {
         n.vy *= 0.85;
 
         // Boundaries
-        n.x = Math.max(n.radius, Math.min(window.innerWidth - n.radius, n.x));
-        n.y = Math.max(n.radius, Math.min(window.innerHeight - n.radius, n.y));
+        if (draggedNode !== n) {
+            n.x = Math.max(n.radius, Math.min(window.innerWidth - n.radius, n.x));
+            n.y = Math.max(n.radius, Math.min(window.innerHeight - n.radius, n.y));
+        }
     });
 }
 
