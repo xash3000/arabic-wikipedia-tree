@@ -4,6 +4,8 @@ const API_BASE = 'https://ar.wikipedia.org/w/api.php';
 const searchInput = document.getElementById('search-input');
 const randomBtn = document.getElementById('random-btn');
 const clearBtn = document.getElementById('clear-btn');
+const togglePanelBtn = document.getElementById('toggle-panel-btn');
+const uiLayer = document.getElementById('ui-layer');
 const autocompleteList = document.getElementById('autocomplete-list');
 const statusMessage = document.getElementById('status-message');
 const canvas = document.getElementById('tree-canvas');
@@ -107,6 +109,15 @@ clearBtn.addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
 
+togglePanelBtn.addEventListener('click', () => {
+    uiLayer.classList.toggle('minimized');
+    if (uiLayer.classList.contains('minimized')) {
+        togglePanelBtn.textContent = '+';
+    } else {
+        togglePanelBtn.textContent = '-';
+    }
+});
+
 // Close autocomplete on clicking outside
 document.addEventListener('click', (e) => {
     if (!e.target.closest('.input-wrapper')) {
@@ -156,9 +167,9 @@ function findFirstValidLink(htmlText) {
     // Content is usually in .mw-parser-output
     const contentBody = doc.querySelector('.mw-parser-output') || doc.body;
 
-    // Iterate through direct paragraph children to find the first valid link
-    // or sometimes lists
-    const paragraphs = contentBody.querySelectorAll(':scope > p, :scope > ul > li');
+    // Iterate through paragraph children to find the first valid link
+    // or sometimes lists (removed :scope due to mobile browser compatibility issues)
+    const paragraphs = contentBody.querySelectorAll('p, ul > li');
 
     for (let p of paragraphs) {
         let parenthesesDepth = 0;

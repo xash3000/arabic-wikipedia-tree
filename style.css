@@ -143,3 +143,39 @@ p {
 .developer-credit a:hover {
     text-decoration: underline;
 }
+#toggle-panel-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 24px;
+    height: 24px;
+    background: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2c3e50;
+    transition: background 0.2s;
+    z-index: 20;
+}
+
+#toggle-panel-btn:hover {
+    background: #bdc3c7;
+}
+
+#ui-layer.minimized .search-container {
+    display: none;
+}
+
+#ui-layer.minimized {
+    padding: 10px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: none;
+}
