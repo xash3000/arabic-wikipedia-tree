@@ -19,8 +19,13 @@ let traceId = 0;
 
 // 1. Canvas Setup & Resize
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    ctx.resetTransform();
+    ctx.scale(dpr, dpr);
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
@@ -285,8 +290,8 @@ function addNode(title, color) {
         // Start near center
         graphNodes[title] = {
             id: title,
-            x: canvas.width / 2 + (Math.random() * 40 - 20),
-            y: canvas.height / 2 + (Math.random() * 40 - 20),
+            x: window.innerWidth / 2 + (Math.random() * 40 - 20),
+            y: window.innerHeight / 2 + (Math.random() * 40 - 20),
             vx: 0,
             vy: 0,
             radius: 15,
@@ -352,8 +357,8 @@ function updatePhysics() {
     // Center gravity
     nodes.forEach(n => {
         // pull slowly towards center
-        const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
         n.vx += (cx - n.x) * 0.001;
         n.vy += (cy - n.y) * 0.001;
 
@@ -364,8 +369,8 @@ function updatePhysics() {
         n.vy *= 0.85;
 
         // Boundaries
-        n.x = Math.max(n.radius, Math.min(canvas.width - n.radius, n.x));
-        n.y = Math.max(n.radius, Math.min(canvas.height - n.radius, n.y));
+        n.x = Math.max(n.radius, Math.min(window.innerWidth - n.radius, n.x));
+        n.y = Math.max(n.radius, Math.min(window.innerHeight - n.radius, n.y));
     });
 }
 
