@@ -117,12 +117,22 @@ async function startTracing(startTitle) {
     addNode(currentTitle, searchColor);
 
     while (traceId === currentTraceId) {
+        if (currentTitle === 'فلسفة') {
+            ui.statusMessage.textContent = 'تم الوصول إلى الفلسفة!';
+            break;
+        }
+        
         ui.statusMessage.textContent = `جاري جلب: ${currentTitle}...`;
         path.add(currentTitle);
 
         try {
             const result = await processArticle(currentTitle, searchColor, path);
-            if (!result) break; // Finished, dead end, or loop found
+            if (!result) {
+                if (currentTitle === 'فلسفة') {
+                    ui.statusMessage.textContent = 'تم الوصول إلى الفلسفة!';
+                }
+                break; // Finished, dead end, or loop found
+            }
 
             currentTitle = result;
             await new Promise(r => setTimeout(r, 600)); // Delay to be polite to Wikipedia API
@@ -143,6 +153,7 @@ async function processArticle(currentTitle, searchColor, path) {
         addEdge(currentTitle, resolvedTitle);
         currentTitle = resolvedTitle;
         path.add(currentTitle);
+        if (currentTitle === 'فلسفة') return null;
     }
 
     const nextArticle = findFirstValidLink(html);
