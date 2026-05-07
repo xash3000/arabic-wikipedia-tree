@@ -1,10 +1,10 @@
-export function findFirstValidLink(htmlText) {
+export function findValidLinks(htmlText) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlText, 'text/html');
 
     cleanDocument(doc);
     const contentBody = doc.querySelector('.mw-parser-output') || doc.body;
-    return extractLinkFromContent(contentBody);
+    return extractLinksFromContent(contentBody);
 }
 
 function cleanDocument(doc) {
@@ -17,8 +17,9 @@ function cleanDocument(doc) {
     });
 }
 
-function extractLinkFromContent(contentBody) {
+function extractLinksFromContent(contentBody) {
     const paragraphs = contentBody.querySelectorAll('p, ul > li');
+    const links = [];
 
     for (let p of paragraphs) {
         let parenthesesDepth = 0;
@@ -35,13 +36,15 @@ function extractLinkFromContent(contentBody) {
                 if (parenthesesDepth === 0) {
                     const href = currentNode.getAttribute('href');
                     const title = currentNode.getAttribute('title');
-                    if (href && href.startsWith('/wiki/') && title && !title.includes(':')) return title;
+                    if (href && href.startsWith('/wiki/') && title && !title.includes(':')) {
+                        links.push(title);
+                    }
                 }
             }
             currentNode = walker.nextNode();
         }
     }
-    return null;
+    return links;
 }
 
 function updateParenthesesDepth(text, currentDepth) {

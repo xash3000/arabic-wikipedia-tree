@@ -1,5 +1,5 @@
 import { fetchAutocomplete, fetchRandomArticle, fetchArticleHTML } from './api.js';
-import { findFirstValidLink } from './parser.js';
+import { findValidLinks } from './parser.js';
 import { clearGraph, addNode, addEdge, graphNodes } from './graph.js';
 import { setupRenderer } from './renderer.js';
 
@@ -10,7 +10,8 @@ const ui = {
     autocompleteList: document.getElementById('autocomplete-list'),
     statusMessage: document.getElementById('status-message'),
     togglePanelBtn: document.getElementById('toggle-panel-btn'),
-    uiLayer: document.getElementById('ui-layer')
+    uiLayer: document.getElementById('ui-layer'),
+    breakLoopsCheckbox: document.getElementById('break-loops-checkbox')
 };
 
 let traceId = 0;
@@ -121,7 +122,7 @@ async function startTracing(startTitle) {
             ui.statusMessage.textContent = 'تم الوصول إلى الفلسفة!';
             break;
         }
-        
+
         ui.statusMessage.textContent = `جاري جلب: ${currentTitle}...`;
         path.add(currentTitle);
 
@@ -156,10 +157,25 @@ async function processArticle(currentTitle, searchColor, path) {
         if (currentTitle === 'فلسفة') return null;
     }
 
-    const nextArticle = findFirstValidLink(html);
-    if (!nextArticle) {
+    const validLinks = findValidLinks(html);
+    if (!validLinks || validLinks.length === 0) {
         document.getElementById('status-message').textContent = `تم الوصول إلى طريق مسدود عند: ${currentTitle}`;
         return null;
+    }
+
+    const breakLoops = ui.breakLoopsCheckbox.checked;
+
+    let nextArticle = null;
+
+    for (const link of validLinks) {
+        const isLoop = path.has(link);
+
+        if (isLoop && breakLoops) {
+            continue;
+        }
+
+        nextArticle = link;
+        break;
     }
 
     const isNextEstablished = !!graphNodes[nextArticle];
